@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int               @id @default(autoincrement())
+  name        String
+  price       Int
+  desc        String
+  slug        String?
+  created_at  DateTime          @default(now())
+  updated_at  DateTime          @updatedAt
+  category    Product_category? @relation(fields: [category_id], references: [id])
+  category_id Int?              @unique
+  discount    Discount?         @relation(fields: [discount_id], references: [id])
+  discount_id Int?
+  orders      Order_details[]
+  image_url   String?
+}
+
+model Product_category {
+  id       Int       @id @default(autoincrement())
+  Products Product[]
+}
+
+model Discount {
+  id               Int       @id @default(autoincrement())
+  name             String
+  desc             String?
+  discount_percent Decimal
+  active           Boolean   @default(false)
+  created_at       DateTime  @default(now())
+  products         Product[]
+}
+
+model User {
+  id            Int             @id @default(autoincrement())
+  password_hash String
+  first_name    String
+  last_name     String
+  email         String          @unique
+  isAdmin       Boolean         @default(false)
+  created_at    DateTime        @default(now())
+  order         Order_details[]
+  address       User_address?
+}
+
+model Order_details {
+  id       Int              @id @default(autoincrement())
+  user     User?            @relation(fields: [user_id], references: [id])
+  user_id  Int              @unique
+  products Product[]
+  payment  Payment_details?
+}
+
+model Payment_details {
+  id        Int            @id @default(autoincrement())
+  amount    Int
+  provider  String?
+  status    String         @default("pending")
+  createdAt DateTime       @default(now())
+  order     Order_details? @relation(fields: [order_id], references: [id])
+  order_id  Int            @unique
+}
+
+model User_address {
+  id          Int    @id @default(autoincrement())
+  user_id     Int    @unique
+  phone_no    Int
+  postal_code Int
+  address     String
+  city        String
+  country     String
+  user        User   @relation(fields: [user_id], references: [id])
+}

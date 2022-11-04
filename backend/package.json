@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "@prisma/client": "^4.2.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "stripe": "^10.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "prisma": "^4.2.1"
+  },
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Nike e-commerce backend",
+  "main": "server.js",
+  "author": "Chibuike Ezeiru",
+  "license": "ISC"
+}
